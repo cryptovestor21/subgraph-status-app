@@ -53,18 +53,18 @@ jobs:
         uses: dcarbone/install-jq-action@v2.1.0
 
       - name: Validate environment
-              run: |
-                echo "Validating environment variables..."
-                [[ -z "$CERC_REGISTRY_USER_KEY" ]] && echo "CERC_REGISTRY_USER_KEY is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_BOND_ID" ]] && echo "CERC_REGISTRY_BOND_ID is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_REST_ENDPOINT" ]] && echo "CERC_REGISTRY_REST_ENDPOINT is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_GQL_ENDPOINT" ]] && echo "CERC_REGISTRY_GQL_ENDPOINT is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_CHAIN_ID" ]] && echo "CERC_REGISTRY_CHAIN_ID is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_APP_CRN" ]] && echo "CERC_REGISTRY_APP_CRN is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME" ]] && echo "CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME is not set" && exit 1
-                [[ -z "$CERC_REGISTRY_DEPLOYMENT_CRN" ]] && echo "CERC_REGISTRY_DEPLOYMENT_CRN is not set" && exit 1
-                echo "Environment validation completed successfully."
-                
+        run: |
+          echo "Validating environment variables..."
+          [[ -z "$CERC_REGISTRY_USER_KEY" ]] && echo "CERC_REGISTRY_USER_KEY is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_BOND_ID" ]] && echo "CERC_REGISTRY_BOND_ID is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_REST_ENDPOINT" ]] && echo "CERC_REGISTRY_REST_ENDPOINT is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_GQL_ENDPOINT" ]] && echo "CERC_REGISTRY_GQL_ENDPOINT is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_CHAIN_ID" ]] && echo "CERC_REGISTRY_CHAIN_ID is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_APP_CRN" ]] && echo "CERC_REGISTRY_APP_CRN is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME" ]] && echo "CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME is not set" && exit 1
+          [[ -z "$CERC_REGISTRY_DEPLOYMENT_CRN" ]] && echo "CERC_REGISTRY_DEPLOYMENT_CRN is not set" && exit 1
+          echo "Environment validation completed successfully."
+
       - name: Prepare and run publish script
         run: |
           chmod +x scripts/publish-app-record.sh
