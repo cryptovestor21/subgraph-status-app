@@ -1,4 +1,4 @@
-name: Publish ApplicationRecord to Registry
+name: Build and Publish Application Record
 
 on:
   release:
@@ -19,42 +19,40 @@ env:
   CERC_REGISTRY_DEPLOYMENT_CRN: ${{ secrets.CERC_REGISTRY_DEPLOYMENT_CRN }}
 
 jobs:
-  cns_publish:
+  build_and_publish:
     runs-on: ubuntu-latest
     steps:
-      - name: "Clone project repository"
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
+          cache: 'npm'
 
-      - name: "Install dependencies"
+      - name: Install dependencies
         run: npm ci
 
-      - name: "Build project"
+      - name: Build project
         run: npm run build
         env:
           CI: false
 
-      - name: "Install Yarn"
+      - name: Install Yarn and TypeScript
         run: |
-          npm install --dev
-          npm install -g yarn
-          npm install -g typescript
+          npm install -g yarn typescript
 
-      - name: "Install registry CLI"
+      - name: Setup registry CLI
         run: |
           npm config set @cerc-io:registry https://git.vdb.to/api/packages/cerc-io/npm/
           yarn global add @cerc-io/laconic-registry-cli
           laconic --version
 
-      - name: "Install jq"
+      - name: Install jq
         uses: dcarbone/install-jq-action@v2.1.0
 
-      - name: "Make publish-app-record.sh executable"
-        run: chmod +x scripts/publish-app-record.sh
-
-      - name: "Publish App Record"
-        run: ./scripts/publish-app-record.sh
+      - name: Prepare and run publish script
+        run: |
+          chmod +x scripts/publish-app-record.sh
+          ./scripts/publish-app-record.sh
