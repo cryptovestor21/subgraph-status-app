@@ -31,6 +31,14 @@ jobs:
           node-version: '18'
           cache: 'npm'
 
+
+      - name: Install Yarn and TypeScript
+        run: |
+          npm install -g yarn typescript
+          
+      - name: Install some crap
+        run: npm install --dev
+        
       - name: Install dependencies
         run: npm ci
 
@@ -39,9 +47,6 @@ jobs:
         env:
           CI: false
 
-      - name: Install Yarn and TypeScript
-        run: |
-          npm install -g yarn typescript
 
       - name: Setup registry CLI
         run: |
