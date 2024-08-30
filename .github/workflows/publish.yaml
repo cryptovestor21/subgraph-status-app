@@ -1,4 +1,5 @@
 name: Publish ApplicationRecord to Registry
+
 on:
   release:
     types: [published]
@@ -10,6 +11,12 @@ on:
 env:
   CERC_REGISTRY_USER_KEY: ${{ secrets.CICD_LACONIC_USER_KEY }}
   CERC_REGISTRY_BOND_ID: ${{ secrets.CICD_LACONIC_BOND_ID }}
+  CERC_REGISTRY_REST_ENDPOINT: ${{ secrets.CERC_REGISTRY_REST_ENDPOINT }}
+  CERC_REGISTRY_GQL_ENDPOINT: ${{ secrets.CERC_REGISTRY_GQL_ENDPOINT }}
+  CERC_REGISTRY_CHAIN_ID: ${{ secrets.CERC_REGISTRY_CHAIN_ID }}
+  CERC_REGISTRY_APP_CRN: ${{ secrets.CERC_REGISTRY_APP_CRN }}
+  CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME: ${{ secrets.CERC_REGISTRY_DEPLOYMENT_SHORT_HOSTNAME }}
+  CERC_REGISTRY_DEPLOYMENT_CRN: ${{ secrets.CERC_REGISTRY_DEPLOYMENT_CRN }}
 
 jobs:
   cns_publish:
@@ -17,10 +24,12 @@ jobs:
     steps:
       - name: "Clone project repository"
         uses: actions/checkout@v3
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18 # though you need version 14 with geojson
+
       - name: "Install Yarn"
         run: |
           npm install -g yarn
@@ -31,7 +40,12 @@ jobs:
           npm config set @cerc-io:registry https://git.vdb.to/api/packages/cerc-io/npm/
           yarn global add @cerc-io/laconic-registry-cli
           laconic --version
+
       - name: "Install jq"
         uses: dcarbone/install-jq-action@v2.1.0
+
+      - name: "Make publish-app-record.sh executable"
+        run: chmod +x scripts/publish-app-record.sh
+
       - name: "Publish App Record"
-        run: scripts/publish-app-record.sh
+        run: ./scripts/publish-app-record.sh
